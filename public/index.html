@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/p5.min.js" integrity="sha512-b/htz6gIyFi3dwSoZ0Uv3cuv3Ony7EeKkacgrcVg8CMzu90n777qveu0PBcbZUA7TzyENGtU+qZRuFAkfqgyoQ==" crossorigin="anonymous"></script>
+        <title>Document</title>
+    </head>
+    <body>
+
+        <h1>Data selfie App</h1>
+
+        <p>latitude: <span id = "latitude"></span><br />
+            longitude: <span id = "longitude"></span>
+        </p>
+
+        <input type = "text" id = "random" placeholder = "photo">
+
+
+        <button id="submit">
+            submit
+        </button>
+
+        <script>
+
+            function setup() {
+                let lat, lon;
+            const button = document.getElementById('submit');
+
+            button.addEventListener('click', async event =>{
+                const obj = document.getElementById('random').value;
+                video.loadPixels()
+                const image64 = video.canvas.toDataURL();
+                const data = { lat, lon, obj, image64};
+                    const options = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    };
+                    const response = await fetch('/api', options);
+                    const json = await response.json();
+                    console.log(json);
+                });
+
+
+
+            if('geolocation' in navigator)
+            {
+                //same as function(position) {}
+                console.log('geolocation available');
+                navigator.geolocation.getCurrentPosition(async position => {
+                    lat = position.coords.latitude;
+                    lon = position.coords.longitude;
+
+                    document.getElementById("latitude").textContent = lat;
+                    document.getElementById("longitude").textContent = lon;
+                    
+                });
+            }
+            else
+            {
+                console.log('geolocation unavailable');
+            }
+
+                noCanvas();
+                const video = createCapture(VIDEO);
+                video.size(320, 240);
+            }
+
+        </script>
+    </body>
+</html>

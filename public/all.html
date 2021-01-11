@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            //calling fetch to get is different then fetch with post
+            //you can use the same route
+            async function getData()
+            {
+                const response = await fetch('/api');
+                const data = await response.json();
+
+                for (item of data) {
+                const root = document.createElement('div');
+                const obj = document.createElement('div');
+                const geo = document.createElement('div');
+                const date = document.createElement('div');
+                const image = document.createElement('img');
+
+                obj.textContent = `obj: ${item.obj}`;
+                geo.textContent = `${item.lat}, ${item.lon}`;
+                const dateString = new Date(item.timestamp).toLocaleString();
+                date.textContent = dateString;
+                image.src = item.image64;
+
+
+                root.append(obj, geo, date, image);
+                document.body.append(root);
+                }
+                
+                console.log(data);
+            
+            }
+            
+
+            getData();
+           
+        </script>
+    </body>
+</html>
